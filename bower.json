@@ -1,0 +1,27 @@
+{
+  "name": "pano-video-player",
+  "homepage": "https://github.com/halochou/pano-video-player",
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "keywords": [
+    "webvr",
+    "three.js"
+  ],
+  "authors": [
+    "halo.chou@gmail.com"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "webvr-polyfill": "~0.2.3",
+    "webvr-boilerplate": "~0.3.3"
+  }
+}
