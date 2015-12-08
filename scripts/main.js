@@ -1,7 +1,12 @@
 // var player = require("pano.js");
 import PanoPlayer from './PanoPlayer.js';
 
-var player = new PanoPlayer("http://182.92.4.139:1935/vod/mp4:sample.mp4/manifest.mpd");
+var url = "http://182.92.4.139:1935/vod/mp4:sample.mp4/manifest.mpd";
+var player = new PanoPlayer(url, function(renderer){
+  //document.body.appendChild(renderer.domElement);
+  var appDiv = document.getElementById('app');
+  appDiv.appendChild(renderer.domElement);
+}.bind(this));
 window.player = player;
 
 document.body.addEventListener('click',function(){
@@ -10,11 +15,9 @@ document.body.addEventListener('click',function(){
 
 function animate(timestamp) {
   //var video = player.getVideo();
-  if (player.video.readyState === player.video.HAVE_ENOUGH_DATA) {
+  if (player.video.readyState != 0 ) {
     if (player.videoTexture) {
       player.videoTexture.needsUpdate = true;
-    } else {
-      console.log("No video texture!!");
     }
     // Update VR headset position and apply to camera.
     player.controls.update();
