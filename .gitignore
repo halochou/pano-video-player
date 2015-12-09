@@ -1,5 +1,6 @@
 bower_components
 node_modules
+videos
 npm-debug.log
 .DS_Store
 nested-dispatch.js

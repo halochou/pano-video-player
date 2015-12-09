@@ -52,15 +52,21 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var url = "http://182.92.4.139:1935/vod/mp4:sample.mp4/manifest.mpd"; // var player = require("pano.js");
+	// var url = "http://182.92.4.139:1935/vod/mp4:sample.mp4/manifest.mpd";
+	// var url = "http://192.168.31.105/~halo/pano-video-player/videos/playlist.m3u8";
+	var url = "http://192.168.31.105/~halo/pano-video-player/videos/sample.mp4"; // var player = require("pano.js");
 	
-	var player = new _PanoPlayer2.default(url, (function (renderer) {
+	var appendRender = function appendRender(renderer) {
 	  document.body.appendChild(renderer.domElement);
-	}).bind(undefined));
+	};
+	
+	// var player = new PanoPlayer(url, appendRender.bind(this));
+	var player = new _PanoPlayer2.default(url, appendRender);
 	window.player = player;
 	
 	document.body.addEventListener('click', (function () {
 	  player.video.play();
+	  // animate();
 	}).bind(undefined), false);
 	
 	function animate(timestamp) {
@@ -68,12 +74,12 @@
 	  if (player.video.readyState != 0) {
 	    if (player.videoTexture) {
 	      player.videoTexture.needsUpdate = true;
-	    }
-	    // Update VR headset position and apply to camera.
-	    player.controls.update();
+	      // Update VR headset position and apply to camera.
+	      player.controls.update();
 	
-	    // Render the scene through the manager.
-	    player.manager.render(player.scene, player.camera, timestamp);
+	      // Render the scene through the manager.
+	      player.manager.render(player.scene, player.camera, timestamp);
+	    }
 	  }
 	
 	  requestAnimationFrame(animate);
@@ -100,13 +106,25 @@
 	        _classCallCheck(this, PanoPlayer);
 	
 	        this.video = document.createElement('video');
+	        // document.body.appendChild(this.video);
+	        // this.video = document.getElementById('video');
 	
 	        this._url = url || "";
-	        this.initDashSource();
+	        // this.initDashSource();
+	        this.initHlsSource();
 	        this.done = done;
 	    }
 	
 	    _createClass(PanoPlayer, [{
+	        key: 'initHlsSource',
+	        value: function initHlsSource() {
+	            this.video.src = this._url;
+	            this.video.controls = true;
+	            this.video.play();
+	            // setTimeout(this.initThree.bind(this), 5000);
+	            this.initThree();
+	        }
+	    }, {
 	        key: 'initDashSource',
 	        value: function initDashSource() {
 	            // Install polyfills.
@@ -135,6 +153,8 @@
 	    }, {
 	        key: 'initThree',
 	        value: function initThree() {
+	            console.log("three started.");
+	
 	            this.renderer = new THREE.WebGLRenderer({ antialias: false });
 	            this.renderer.setPixelRatio(window.devicePixelRatio);
 	            this.scene = new THREE.Scene();
@@ -158,7 +178,8 @@
 	            this.sphere.scale.x = -1;
 	            this.scene.add(this.sphere);
 	
-	            this.done(this.renderer);
+	            document.body.appendChild(this.renderer.domElement);
+	            // this.done(this.renderer);
 	        }
 	    }]);
 	

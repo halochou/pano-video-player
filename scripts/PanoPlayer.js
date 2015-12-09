@@ -1,13 +1,24 @@
 class PanoPlayer {
     constructor(url, done) {
         this.video = document.createElement('video');
+        // document.body.appendChild(this.video);
+        // this.video = document.getElementById('video');
 
         this._url = url || "";
-        this.initDashSource();
+        // this.initDashSource();
+        this.initHlsSource();
         this.done = done;
     }
 
-    initDashSource(){
+    initHlsSource() {
+      this.video.src = this._url;
+      this.video.controls = true;
+      this.video.play();
+      // setTimeout(this.initThree.bind(this), 5000);
+      this.initThree();
+    }
+
+    initDashSource() {
       // Install polyfills.
       //shaka.polyfill.installAll();
       shaka.polyfill.CustomEvent.install();
@@ -33,6 +44,8 @@ class PanoPlayer {
     }
 
     initThree(){
+        console.log("three started.")
+
         this.renderer = new THREE.WebGLRenderer({antialias: false});
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.scene = new THREE.Scene();
@@ -56,7 +69,8 @@ class PanoPlayer {
         this.sphere.scale.x = -1;
         this.scene.add(this.sphere);
 
-        this.done(this.renderer);
+        document.body.appendChild(this.renderer.domElement);
+        // this.done(this.renderer);
     }
 }
 
